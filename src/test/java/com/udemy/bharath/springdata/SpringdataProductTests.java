@@ -8,6 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -66,11 +70,15 @@ public class SpringdataProductTests {
 		assertEquals(1, productRepository.count());
 	}
 
+
 //	Testing finder methods -------------------------------------------------------------------------------------------------------
 
 	@Test
 	public void testFindByName() {
-		assertEquals(2, productRepository.findByName("Iphone 8").size());
+
+		List<Product> products = getAndLogProducts(productRepository.findByName("Iphone 8"));
+
+		assertEquals(2, products.size());
 	}
 
 	@Test
@@ -80,14 +88,54 @@ public class SpringdataProductTests {
 
 	@Test
 	public void testFindByNameLike() {
+		List<Product> products = getAndLogProducts(productRepository.findByNameLike("%Iphone%"));
+		assertEquals(4, products.size());
+	}
 
-		// NOT WORKING
-
-		assertEquals(4, productRepository.findByNameLike("Iphone").size());
+	@Test
+	public void testFindByNameContains() {
+		List<Product> products = getAndLogProducts(productRepository.findByNameContains("Iphone"));
+		assertEquals(4, products.size());
 	}
 
 	@Test
 	public void testFindByPriceGreaterThan() {
-		assertEquals(2, productRepository.findByPriceGreaterThan(900d).size());
+		List<Product> products = getAndLogProducts(productRepository.findByPriceGreaterThan(900d));
+		assertEquals(2, products.size());
+	}
+
+	@Test
+	public void testfindByPriceBetween() {
+		List<Product> products = getAndLogProducts(productRepository.findByPriceBetween(740d, 1000d));
+		assertEquals(3, products.size());
+	}
+
+	@Test
+	public void testfindByIdIn() {
+//		List<Integer> intList = new ArrayList<>();
+//		intList.add(new Integer(2));
+//		intList.add(new Integer(3));
+//		intList.add(new Integer(4));
+
+		List<Integer> intList = Arrays.asList(2,3,4);
+
+		List<Product> products = getAndLogProducts(productRepository.findByIdIn(intList));
+		assertEquals(3, products.size());
+	}
+
+	@Test
+	public void testfindByPriceIn() {
+//		List<Double> dblList = new ArrayList<>();
+//		dblList.add(new Double(1100));
+//		dblList.add(new Double(900));
+
+		List<Double> dblList = Arrays.asList(1100d, 900d);
+		List<Product> products = getAndLogProducts(productRepository.findByPriceIn(dblList));
+		assertEquals(2, products.size());
+	}
+
+	private List<Product> getAndLogProducts(List<Product> products) {
+		products.forEach(p -> System.out.println(p.toString()));
+		return products;
 	}
 }
