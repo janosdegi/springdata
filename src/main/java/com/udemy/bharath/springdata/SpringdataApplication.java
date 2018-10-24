@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringdataApplication {
 
 //	https://spring.io/projects/spring-data-jpa
-	
+//	https://docs.spring.io/spring-data/jpa/docs/2.1.1.RELEASE/reference/html/#repository-query-keywords
+
 	public static void main(String[] args) {
 		SpringApplication.run(SpringdataApplication.class, args);
 	}
