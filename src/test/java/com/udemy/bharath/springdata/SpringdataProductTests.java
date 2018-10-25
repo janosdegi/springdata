@@ -2,10 +2,15 @@ package com.udemy.bharath.springdata;
 
 import com.udemy.bharath.springdata.domain.Product;
 import com.udemy.bharath.springdata.repository.ProductRepository;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -21,6 +26,20 @@ public class SpringdataProductTests {
 
 	@Autowired
 	ProductRepository productRepository;
+
+	@Before
+	public void logBefore() {
+		System.out.println(" ----------------------------------------------------------------------------------------------------------- ");
+		System.out.println(" ");
+		System.out.println(" ");
+	}
+
+	@After
+	public void logAfter() {
+		System.out.println(" ");
+		System.out.println(" ");
+		System.out.println(" ----------------------------------------------------------------------------------------------------------- ");
+	}
 
 	@Test
 	public void contextLoads() {
@@ -72,6 +91,7 @@ public class SpringdataProductTests {
 
 
 //	Testing finder methods -------------------------------------------------------------------------------------------------------
+
 
 	@Test
 	public void testFindByName() {
@@ -134,7 +154,26 @@ public class SpringdataProductTests {
 		assertEquals(2, products.size());
 	}
 
+
+//	Testing Paging and sorting -------------------------------------------------------------------------------------------------------
+
+	@Test
+	public void testfindAllPaging() {
+//		Pageable pageable = new PageRequest(0, 2);
+		Pageable pageable = PageRequest.of(0, 2); //0: number of page, 2: elements on the page
+		Page<Product> results = getAndLogProductsPages(productRepository.findAll(pageable));;
+	}
+
+
+
+//	Utility
+
 	private List<Product> getAndLogProducts(List<Product> products) {
+		products.forEach(p -> System.out.println(p.toString()));
+		return products;
+	}
+
+	private Page<Product> getAndLogProductsPages(Page<Product> products) {
 		products.forEach(p -> System.out.println(p.toString()));
 		return products;
 	}
