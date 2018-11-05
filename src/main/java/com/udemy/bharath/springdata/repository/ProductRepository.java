@@ -1,6 +1,7 @@
 package com.udemy.bharath.springdata.repository;
 
 import com.udemy.bharath.springdata.domain.Product;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -27,5 +28,7 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
     public List<Product> findByIdIn(List<Integer> ids);
 
     public List<Product> findByPriceIn(List<Double> prices);
+
+    public List<Product> findByPriceIn(List<Double> prices, Pageable pageable);
 
 }

@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -29,6 +30,8 @@ public class SpringdataProductTests {
 
 	@Before
 	public void logBefore() {
+		System.out.println(" ");
+		System.out.println(" ");
 		System.out.println(" ----------------------------------------------------------------------------------------------------------- ");
 		System.out.println(" ");
 		System.out.println(" ");
@@ -39,6 +42,8 @@ public class SpringdataProductTests {
 		System.out.println(" ");
 		System.out.println(" ");
 		System.out.println(" ----------------------------------------------------------------------------------------------------------- ");
+		System.out.println(" ");
+		System.out.println(" ");
 	}
 
 	@Test
@@ -161,12 +166,39 @@ public class SpringdataProductTests {
 	public void testfindAllPaging() {
 //		Pageable pageable = new PageRequest(0, 2);
 		Pageable pageable = PageRequest.of(0, 2); //0: number of page, 2: elements on the page
-		Page<Product> results = getAndLogProductsPages(productRepository.findAll(pageable));;
+		Page<Product> results = getAndLogProductsPages(productRepository.findAll(pageable));
+	}
+
+	@Test
+	public void testfindAllSorting() {
+//		productRepository.findAll(Sort.by("description")).forEach(p -> System.out.println(p.toString()));
+//		productRepository.findAll(Sort.by("description").descending()).forEach(p -> System.out.println(p.toString())); //desc
+
+		//short by multiple properties
+		//productRepository.findAll(Sort.by("description","price")).forEach(p -> System.out.println(p.toString()));
+
+		//order
+		productRepository.findAll(Sort.by(	new Sort.Order(Sort.Direction.DESC, "price"),
+											new Sort.Order(Sort.Direction.ASC, "name")))
+				.forEach(p -> System.out.println(p.toString()));
+	}
+
+	@Test
+	public void testfindAllPagingAndSorting() {
+		Pageable pageable = PageRequest.of(0, 2, Sort.Direction.DESC, "description"); //0: number of page, 2: elements on the page
+		Page<Product> results = getAndLogProductsPages(productRepository.findAll(pageable));
+	}
+
+	@Test
+	public void testfindByPriceInPagingAndSorting() {
+//		Pageable pageable = PageRequest.of(0, 2);
+		Pageable pageable = PageRequest.of(0, 3, Sort.Direction.DESC, "description");
+		List<Double> dblList = Arrays.asList(1100d, 900d, 1000d);
+		List<Product> products = getAndLogProducts(productRepository.findByPriceIn(dblList, pageable));
 	}
 
 
-
-//	Utility
+//	Utility -------------------------------------------------------------------------------------------------------
 
 	private List<Product> getAndLogProducts(List<Product> products) {
 		products.forEach(p -> System.out.println(p.toString()));
