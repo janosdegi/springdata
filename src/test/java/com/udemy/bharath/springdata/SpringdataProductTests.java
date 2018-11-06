@@ -198,6 +198,14 @@ public class SpringdataProductTests {
 	}
 
 
+//	JPQL -------------------------------------------------------------------------------------------------------
+
+	@Test
+	public void findAllProducts() {
+		List<Product> products = getAndLogProducts(productRepository.findAllProducts());
+	}
+
+
 //	Utility -------------------------------------------------------------------------------------------------------
 
 	private List<Product> getAndLogProducts(List<Product> products) {
