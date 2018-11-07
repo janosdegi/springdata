@@ -12,7 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -205,6 +207,34 @@ public class SpringdataProductTests {
 		List<Product> products = getAndLogProducts(productRepository.findAllProducts());
 	}
 
+	@Test
+	public void findAllProductsPartialData() {
+		List<Object[]> products = productRepository.findAllProductsPartialData();
+		int j = 0;
+		products.forEach(oArray -> {
+			for (int i = 0; i < oArray.length; i++) {
+				System.out.print(oArray[i] + " ");
+			}
+			System.out.println();
+		});
+	}
+
+	@Test
+	public void findAllProductsByName() {
+		List<Product> products = getAndLogProducts(productRepository.findAllProductsByName("Iphone"));
+	}
+
+	@Test
+	public void findAllProductsBetween() {
+		List<Product> products = getAndLogProducts(productRepository.findAllProductsBetween(770d, 1001d));
+	}
+
+	@Test
+	@Transactional //as this is a junit test after the transaction finished the transaction will be rolled back
+	@Rollback(false) //to avoid this default rollback functionality
+	public void deleteProductsByName() {
+		productRepository.deleteProductsByName("bla");
+	}
 
 //	Utility -------------------------------------------------------------------------------------------------------
 
@@ -214,6 +244,11 @@ public class SpringdataProductTests {
 	}
 
 	private Page<Product> getAndLogProductsPages(Page<Product> products) {
+		products.forEach(p -> System.out.println(p.toString()));
+		return products;
+	}
+
+	private List<Object[]> getAndLogProductsPartialData(List<Object[]> products) {
 		products.forEach(p -> System.out.println(p.toString()));
 		return products;
 	}

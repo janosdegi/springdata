@@ -2,9 +2,11 @@ package com.udemy.bharath.springdata.repository;
 
 import com.udemy.bharath.springdata.domain.Product;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -36,5 +38,21 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
     //jpql --------------------------------------------------------------
     @Query("from Product")
     public List<Product> findAllProducts();
+
+    @Query("select p.name, p.description from Product p")
+    public List<Object[]> findAllProductsPartialData();
+
+    @Query("from Product where name=:name_param")
+    public List<Product> findAllProductsByName(@Param("name_param") String name);
+
+    @Query("from Product where price > :priceMin and price < :priceMax")
+    public List<Product> findAllProductsBetween(@Param("priceMin") Double priceFrom, @Param("priceMax") Double priceTo);
+
+    @Modifying
+    @Query("delete from Product where name = :name")
+    void deleteProductsByName(@Param("name") String name);
+
+
+
 
 }
