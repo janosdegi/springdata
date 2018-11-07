@@ -132,13 +132,13 @@ public class SpringdataProductTests {
 	}
 
 	@Test
-	public void testfindByPriceBetween() {
+	public void testFindByPriceBetween() {
 		List<Product> products = getAndLogProducts(productRepository.findByPriceBetween(740d, 1000d));
 		assertEquals(3, products.size());
 	}
 
 	@Test
-	public void testfindByIdIn() {
+	public void testFindByIdIn() {
 //		List<Integer> intList = new ArrayList<>();
 //		intList.add(new Integer(2));
 //		intList.add(new Integer(3));
@@ -151,7 +151,7 @@ public class SpringdataProductTests {
 	}
 
 	@Test
-	public void testfindByPriceIn() {
+	public void testFindByPriceIn() {
 //		List<Double> dblList = new ArrayList<>();
 //		dblList.add(new Double(1100));
 //		dblList.add(new Double(900));
@@ -165,14 +165,14 @@ public class SpringdataProductTests {
 //	Testing Paging and sorting -------------------------------------------------------------------------------------------------------
 
 	@Test
-	public void testfindAllPaging() {
+	public void testFindAllPaging() {
 //		Pageable pageable = new PageRequest(0, 2);
 		Pageable pageable = PageRequest.of(0, 2); //0: number of page, 2: elements on the page
 		Page<Product> results = getAndLogProductsPages(productRepository.findAll(pageable));
 	}
 
 	@Test
-	public void testfindAllSorting() {
+	public void testFindAllSorting() {
 //		productRepository.findAll(Sort.by("description")).forEach(p -> System.out.println(p.toString()));
 //		productRepository.findAll(Sort.by("description").descending()).forEach(p -> System.out.println(p.toString())); //desc
 
@@ -186,13 +186,13 @@ public class SpringdataProductTests {
 	}
 
 	@Test
-	public void testfindAllPagingAndSorting() {
+	public void testFindAllPagingAndSorting() {
 		Pageable pageable = PageRequest.of(0, 2, Sort.Direction.DESC, "description"); //0: number of page, 2: elements on the page
 		Page<Product> results = getAndLogProductsPages(productRepository.findAll(pageable));
 	}
 
 	@Test
-	public void testfindByPriceInPagingAndSorting() {
+	public void testFindByPriceInPagingAndSorting() {
 //		Pageable pageable = PageRequest.of(0, 2);
 		Pageable pageable = PageRequest.of(0, 3, Sort.Direction.DESC, "description");
 		List<Double> dblList = Arrays.asList(1100d, 900d, 1000d);
@@ -203,12 +203,12 @@ public class SpringdataProductTests {
 //	JPQL -------------------------------------------------------------------------------------------------------
 
 	@Test
-	public void findAllProducts() {
+	public void testFindAllProducts() {
 		List<Product> products = getAndLogProducts(productRepository.findAllProducts());
 	}
 
 	@Test
-	public void findAllProductsPartialData() {
+	public void testFindAllProductsPartialData() {
 		List<Object[]> products = productRepository.findAllProductsPartialData();
 		int j = 0;
 		products.forEach(oArray -> {
@@ -220,21 +220,37 @@ public class SpringdataProductTests {
 	}
 
 	@Test
-	public void findAllProductsByName() {
+	public void testFindAllProductsByName() {
 		List<Product> products = getAndLogProducts(productRepository.findAllProductsByName("Iphone"));
 	}
 
 	@Test
-	public void findAllProductsBetween() {
+	public void testFindAllProductsBetween() {
 		List<Product> products = getAndLogProducts(productRepository.findAllProductsBetween(770d, 1001d));
 	}
 
 	@Test
 	@Transactional //as this is a junit test after the transaction finished the transaction will be rolled back
 	@Rollback(false) //to avoid this default rollback functionality
-	public void deleteProductsByName() {
+	public void testDeleteProductsByName() {
 		productRepository.deleteProductsByName("bla");
 	}
+
+	@Test
+	public void testFindAllProductsPageable() {
+		Pageable pageable = PageRequest.of(0, 3); //0: number of page, 2: elements on the page
+		List<Product> results = getAndLogProducts(productRepository.findAllProductsPageable(pageable));
+	}
+
+	@Test
+	public void testFindAllProductsSort() {
+		Pageable pageable = PageRequest.of(0, 5, Sort.Direction.DESC, "description"); //0: number of page, 2: elements on the page
+		List<Product> results = getAndLogProducts(productRepository.findAllProductsPageable(pageable));
+	}
+
+//	Native SQL Query ----------------------------------------------------------------------------------------------
+
+
 
 //	Utility -------------------------------------------------------------------------------------------------------
 

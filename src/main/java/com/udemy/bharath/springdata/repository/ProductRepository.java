@@ -39,6 +39,9 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
     @Query("from Product")
     public List<Product> findAllProducts();
 
+    @Query("from Product")
+    public List<Product> findAllProductsPageable(Pageable pageable);
+
     @Query("select p.name, p.description from Product p")
     public List<Object[]> findAllProductsPartialData();
 
