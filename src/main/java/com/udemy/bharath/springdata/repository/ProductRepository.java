@@ -36,6 +36,7 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 
 
     //jpql --------------------------------------------------------------
+
     @Query("from Product")
     public List<Product> findAllProducts();
 
@@ -54,6 +55,14 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
     @Modifying
     @Query("delete from Product where name = :name")
     void deleteProductsByName(@Param("name") String name);
+
+    //native sql query --------------------------------------------------------------
+
+    @Query(value = "select * from product", nativeQuery = true)
+    public List<Product> findAllProductsNQ();
+
+    @Query(value = "select * from product where name=:nameNamedParam", nativeQuery = true)
+    public List<Product> findProductsByNameNQ(@Param("nameNamedParam") String name);
 
 
 

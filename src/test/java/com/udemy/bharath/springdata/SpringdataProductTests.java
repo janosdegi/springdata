@@ -250,7 +250,15 @@ public class SpringdataProductTests {
 
 //	Native SQL Query ----------------------------------------------------------------------------------------------
 
+	@Test
+	public void testFindAllProductsNQ() {
+		List<Product> results = getAndLogProducts(productRepository.findAllProductsNQ());
+	}
 
+	@Test
+	public void testFindProductsByNameNQ() {
+		List<Product> results = getAndLogProducts(productRepository.findProductsByNameNQ("Iphone"));
+	}
 
 //	Utility -------------------------------------------------------------------------------------------------------
 
