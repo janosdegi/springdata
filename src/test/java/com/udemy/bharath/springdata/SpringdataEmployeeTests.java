@@ -24,7 +24,7 @@ public class SpringdataEmployeeTests {
 
 	@Test
 	public void testCreate() {
-		Employee employee = new Employee("John");
+		Employee employee = new Employee("Jerry");
 		employeeRepository.save(employee);
 	}
 
