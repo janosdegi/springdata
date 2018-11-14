@@ -12,7 +12,7 @@ import java.io.Serializable;
  * Transaction management
  *
  * Statements in a transaction means that these statements are one atomic work unit
- * all of them will be executed or nothing
+ * all of them will be executed or nothing (All or nothing)
  * method => @Transactional
  *
  */
