@@ -1,13 +1,22 @@
 package com.udemy.bharath.springdata.domain;
 
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
+
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * Created by jd on 2018.10.22..
  */
 @Entity
 @Table
-public class Product {
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY) // level_2 cache does not work because of incompatible versions
+public class Product implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     private int id;

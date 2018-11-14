@@ -11,7 +11,19 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     database: postgresql
     show-sql: true
-#    properties:
+    properties:
+      hibernate:
+        cache:
+          use_second_level_cache: false
+          region:
+            factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
+      javax:
+        persistence:
+          sharedCache:
+            mode: ALL
+  cache:
+    ehcache:
+      config: classpath:ehcache.xml
 #      javax:
 #        persistence:
 #         schema-generation:

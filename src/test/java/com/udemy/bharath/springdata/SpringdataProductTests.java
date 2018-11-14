@@ -274,7 +274,9 @@ public class SpringdataProductTests {
 		Session session = entityManager.unwrap(Session.class);
 		Product product = productRepository.findById(1).orElse(null); // the select statement will be executed only once, and the data will be stored in to the cache
 		productRepository.findById(1); // after the data will be loaded from level_1 cache
-		session.evict(product); // remove the object from the cache
+		session.evict(product); // remove the object from the Level_1 cache | BUT if level_2 cache enabled; (ehcache)
+								// ehcache.xml created and configured there will be only 1 select because the object is
+								// in the level_2 cache
 		System.out.println("Product (id=1) removed from cache.");
 		productRepository.findById(1);
 	}
