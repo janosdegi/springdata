@@ -10,7 +10,7 @@ spring:
       ddl-auto: none
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     database: postgresql
-    show-sql: false
+    show-sql: true
 #    properties:
 #      javax:
 #        persistence:

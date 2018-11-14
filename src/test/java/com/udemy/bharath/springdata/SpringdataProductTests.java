@@ -16,6 +16,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +30,9 @@ public class SpringdataProductTests {
 
 	@Autowired
 	ProductRepository productRepository;
+
+	@Autowired
+	EntityManager entityManager;
 
 	@Before
 	public void logBefore() {
@@ -230,8 +234,8 @@ public class SpringdataProductTests {
 	}
 
 	@Test
-	@Transactional //as this is a junit test after the transaction finished the transaction will be rolled back
-	@Rollback(false) //to avoid this default rollback functionality
+	@Transactional // as this is a junit test after the transaction finished the transaction will be rolled back
+	@Rollback(false) // to avoid this default rollback functionality
 	public void testDeleteProductsByName() {
 		productRepository.deleteProductsByName("bla");
 	}
@@ -259,6 +263,18 @@ public class SpringdataProductTests {
 	public void testFindProductsByNameNQ() {
 		List<Product> results = getAndLogProducts(productRepository.findProductsByNameNQ("Iphone"));
 	}
+
+
+//	Cache ---------------------------------------------------------------------------------------------------------
+
+	@Test
+	@Transactional // needed in order the hibernate level_1 caching to work - the session is associated with this transaction
+	public void testCaching() {
+		productRepository.findById(1); // the select statement will be executed only once, and the data will be stored in to the cache
+		productRepository.findById(1); // after the data will be loaded from level_1 cache
+		productRepository.findById(1);
+	}
+
 
 //	Utility -------------------------------------------------------------------------------------------------------
 
