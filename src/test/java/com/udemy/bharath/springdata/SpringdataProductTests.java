@@ -2,6 +2,7 @@ package com.udemy.bharath.springdata;
 
 import com.udemy.bharath.springdata.domain.Product;
 import com.udemy.bharath.springdata.repository.ProductRepository;
+import org.hibernate.Session;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -270,8 +271,11 @@ public class SpringdataProductTests {
 	@Test
 	@Transactional // needed in order the hibernate level_1 caching to work - the session is associated with this transaction
 	public void testCaching() {
-		productRepository.findById(1); // the select statement will be executed only once, and the data will be stored in to the cache
+		Session session = entityManager.unwrap(Session.class);
+		Product product = productRepository.findById(1).orElse(null); // the select statement will be executed only once, and the data will be stored in to the cache
 		productRepository.findById(1); // after the data will be loaded from level_1 cache
+		session.evict(product); // remove the object from the cache
+		System.out.println("Product (id=1) removed from cache.");
 		productRepository.findById(1);
 	}
 
